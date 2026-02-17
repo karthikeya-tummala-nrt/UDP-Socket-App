@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:gcs_sockets/ui/home_page.dart';
+import 'package:gcs_sockets/controllers/telemetry_controller.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => TelemetryController(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'GCS - Sockets',
-      home: Text("Hello"),
+      home: HomePage(),
     );
   }
 
