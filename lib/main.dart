@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:gcs_sockets/ui/home_page.dart';
-import 'package:gcs_sockets/controllers/telemetry_controller.dart';
+import 'package:gcs_sockets/core/listener.dart';
+import 'screens/battery_screen.dart';
 
-void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => TelemetryController(),
-      child: const MyApp(),
-    ),
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await UdpListener.instance.ensureBound("0.0.0.0", 7400);
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -19,9 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'GCS - Sockets',
-      home: HomePage(),
+      title: 'GCS - Binary',
+      home: PduScreen(),
     );
   }
-
 }
