@@ -1,35 +1,20 @@
 import 'package:flutter/material.dart';
 import '../controllers/battery_screen_controller.dart';
 
-class PduScreen extends StatefulWidget {
-  const PduScreen({super.key});
+class BatteryScreen extends StatelessWidget {
+  final BatteryScreenController controller;
 
-  @override
-  State<PduScreen> createState() => _PduScreenState();
-}
-
-class _PduScreenState extends State<PduScreen> {
-  late final BatteryScreenManager _manager;
-
-  @override
-  void initState() {
-    super.initState();
-    _manager = BatteryScreenManager();
-    _manager.start();
-  }
-
-  @override
-  void dispose() {
-    _manager.dispose();
-    super.dispose();
-  }
+  const BatteryScreen({
+    super.key,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Battery Data')),
       body: StreamBuilder<BatteryDisplay>(
-        stream: _manager.processedStream,
+        stream: controller.stream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -45,12 +30,13 @@ class _PduScreenState extends State<PduScreen> {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('SOC: ${data.socText}', style: const TextStyle(fontSize: 24)),
+                Text('SOC: ${data.soc.toStringAsFixed(1)} %',
+                    style: const TextStyle(fontSize: 24)),
                 const SizedBox(height: 16),
-                Text('Current: ${data.currentText}', style: const TextStyle(fontSize: 24)),
+                Text('Current: ${data.current.toStringAsFixed(2)} A',
+                    style: const TextStyle(fontSize: 24)),
               ],
             ),
           );
