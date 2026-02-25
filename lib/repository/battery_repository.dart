@@ -1,42 +1,37 @@
 import 'dart:async';
-import 'dart:developer' as dev;
 import 'dart:typed_data';
-import 'package:gcs_sockets/core/udp_data_source.dart';
-import 'package:gcs_sockets/models/battery_telemetry.dart';
-import 'package:gcs_sockets/utils/binary_parser.dart';
+import '../core/messages/message_router.dart';
+import '../models/battery_telemetry.dart';
+import '../utils/binary_parser.dart';
 
 class BatteryRepository {
-  final UdpDataSource _dataSource;
+  final MessageRouter _router;
 
-  final StreamController<BatteryTelemetry> _controller = StreamController<BatteryTelemetry>.broadcast();
+  final StreamController<BatteryTelemetry> _controller =
+      StreamController<BatteryTelemetry>.broadcast();
 
-  StreamSubscription<Uint8List>? _rawSub;
+  StreamSubscription<Uint8List>? _sub;
 
   BatteryTelemetry? _latest;
 
-  BatteryRepository(this._dataSource);
+  BatteryRepository(this._router);
 
   BatteryTelemetry? get latest => _latest;
 
   Stream<BatteryTelemetry> get stream => _controller.stream;
 
   void start() {
-    if (_rawSub != null) return;
+    if (_sub != null) return;
 
-    _rawSub = _dataSource.rawPackets.listen(_handlePacket);
+    _sub = _router.batteryPackets.listen(_handlePacket);
   }
 
   void _handlePacket(Uint8List bytes) {
-    if (bytes.length < BatteryTelemetrySchema.packetSize) return;
+    if (bytes.length < BatteryTelemetry.packetSize) return;
 
     try {
       final telemetry = _parse(bytes);
-
       _latest = telemetry;
-      dev.log(
-          'PARSED PACKET: SOC: ${telemetry.soc}, Current: ${telemetry.current}',
-          name: 'battery_repository'
-      );
       _controller.add(telemetry);
     } catch (e) {
       _controller.addError(e);
@@ -44,23 +39,33 @@ class BatteryRepository {
   }
 
   BatteryTelemetry _parse(Uint8List bytes) {
+    int cursor = 1;
+
+    final socField = BatteryTelemetry.socField;
     final soc = parseBinaryData(
       bytes,
-      BatteryTelemetrySchema.offsetSOC,
-      BatteryTelemetrySchema.sizeSOC,
+      cursor,
+      socField.size,
+      isSigned: socField.isSigned,
+      isBigEndian: socField.endianness == Endianness.big,
     );
 
+    cursor += socField.size;
+
+    final currentField = BatteryTelemetry.currentField;
     final current = parseBinaryData(
       bytes,
-      BatteryTelemetrySchema.offsetCurrent,
-      BatteryTelemetrySchema.sizeCurrent,
+      cursor,
+      currentField.size,
+      isSigned: currentField.isSigned,
+      isBigEndian: currentField.endianness == Endianness.big,
     );
 
     return BatteryTelemetry(soc: soc, current: current);
   }
 
   void dispose() {
-    _rawSub?.cancel();
+    _sub?.cancel();
     _controller.close();
   }
 }
