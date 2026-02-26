@@ -6,12 +6,17 @@ import 'message_type.dart';
 class MessageRouter {
   final UdpDataSource _source;
 
-  final _batteryController = StreamController<Uint8List>.broadcast();
-  Stream<Uint8List> get batteryPackets => _batteryController.stream;
+  final Map<MessageType, StreamController<Uint8List>> _controllers = {};
 
   StreamSubscription? _sub;
 
   MessageRouter(this._source);
+
+  Stream<Uint8List> packetsFor(MessageType type) {
+    return _controllers
+        .putIfAbsent(type, () => StreamController<Uint8List>.broadcast())
+        .stream;
+  }
 
   void start() {
     _sub = _source.rawPackets.listen(_route);
@@ -21,16 +26,16 @@ class MessageRouter {
     if (bytes.isEmpty) return;
 
     final type = decodeMessageType(bytes[0]);
+    if (type == null) return;
 
-    switch (type) {
-      case MessageType.batteryTelemetry:
-        _batteryController.add(bytes);
-        break;
-    }
+    final controller = _controllers[type];
+    controller?.add(bytes);
   }
 
   void dispose() {
     _sub?.cancel();
-    _batteryController.close();
+    for (final c in _controllers.values) {
+      c.close();
+    }
   }
 }

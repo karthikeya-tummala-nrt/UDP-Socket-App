@@ -1,13 +1,17 @@
 enum MessageType {
-  batteryTelemetry,
+  hvBms,
+  hvPdu,
+  lvBattery,
+  lvPdu,
 }
 
-MessageType decodeMessageType(int value) {
-  switch (value) {
-    case 0x01:
-      return MessageType.batteryTelemetry;
-    default:
-      throw UnsupportedError('Unknown message type: $value');
-  }
-}
+final Map<int, MessageType> _messageMap = {
+  0x01: MessageType.hvBms,
+  0x02: MessageType.hvPdu,
+  0x03: MessageType.lvBattery,
+  0x04: MessageType.lvPdu,
+};
 
+MessageType? decodeMessageType(int value) {
+  return _messageMap[value];
+}

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gcs_sockets/controllers/battery_screen_controller.dart';
 import 'package:gcs_sockets/core/udp_data_source.dart';
-import 'package:gcs_sockets/repository/battery_repository.dart';
-import 'package:gcs_sockets/screens/battery_screen.dart';
+import 'package:gcs_sockets/presentation/power_screen/power_screen.dart';
+import 'package:gcs_sockets/repository/hv_bms_repository.dart';
+import 'package:gcs_sockets/repository/hv_pdu_repository.dart';
+import 'package:gcs_sockets/repository/lv_battery_repository.dart';
+import 'package:gcs_sockets/repository/lv_pdu_repository.dart';
 
 import 'core/messages/message_router.dart';
+import 'core/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,35 +17,51 @@ void main() async {
   final messageRouter = MessageRouter(udpSource);
   messageRouter.start();
 
-  final batteryRepository = BatteryRepository(messageRouter);
-  batteryRepository.start();
+  final hvBmsRepository = HvBmsRepository(messageRouter);
+  final hvPduRepository = HvPduRepository(messageRouter);
+  final lvBatteryRepository = LvBatteryRepository(messageRouter);
+  final lvPduRepository = LvPduRepository(messageRouter);
 
-  final batteryController = BatteryScreenController(batteryRepository);
+  hvBmsRepository.start();
+  hvPduRepository.start();
+  lvBatteryRepository.start();
+  lvPduRepository.start();
 
-  udpSource.rawPackets.listen((packet) {
-  });
-
-
-  batteryRepository.stream.listen(
-    (telemetry) {
-    },
-    onError: (e) {
-    },
-  );
-
-  runApp(MyApp(controller: batteryController));
+  runApp(MyApp(
+    hvBmsRepository: hvBmsRepository,
+    hvPduRepository: hvPduRepository,
+    lvBatteryRepository: lvBatteryRepository,
+    lvPduRepository: lvPduRepository,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  final BatteryScreenController controller;
-  const MyApp({super.key, required this.controller});
+  final HvBmsRepository hvBmsRepository;
+  final HvPduRepository hvPduRepository;
+  final LvBatteryRepository lvBatteryRepository;
+  final LvPduRepository lvPduRepository;
+
+  const MyApp({
+    super.key,
+    required this.hvBmsRepository,
+    required this.hvPduRepository,
+    required this.lvBatteryRepository,
+    required this.lvPduRepository,
+  });
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: AppTheme.dark(),
       title: 'GCS - Binary',
-      home: BatteryScreen(controller: controller),
+      home: PowerScreen(
+        hvBmsRepository: hvBmsRepository,
+        hvPduRepository: hvPduRepository,
+        lvBatteryRepository: lvBatteryRepository,
+        lvPduRepository: lvPduRepository,
+      ),
     );
   }
 }
