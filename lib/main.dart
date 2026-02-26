@@ -7,33 +7,26 @@ import 'package:gcs_sockets/screens/battery_screen.dart';
 import 'core/messages/message_router.dart';
 
 void main() async {
-  print("Started exec::::::::::::::::::::");
   WidgetsFlutterBinding.ensureInitialized();
   final udpSource = UdpDataSource();
   await udpSource.init('0.0.0.0', 7400);
 
-  final router = MessageRouter(udpSource);
-  router.start();
+  final messageRouter = MessageRouter(udpSource);
+  messageRouter.start();
 
-  final batteryRepository = BatteryRepository(router);
+  final batteryRepository = BatteryRepository(messageRouter);
   batteryRepository.start();
 
   final batteryController = BatteryScreenController(batteryRepository);
 
   udpSource.rawPackets.listen((packet) {
-    print('RAW PACKET: $packet');
   });
 
 
   batteryRepository.stream.listen(
     (telemetry) {
-      print(
-        'PARSED → SOC: ${telemetry.soc}, '
-        'Current: ${telemetry.current}',
-      );
     },
     onError: (e) {
-      print('ERROR: $e');
     },
   );
 

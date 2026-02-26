@@ -11,9 +11,3 @@ MessageType decodeMessageType(int value) {
   }
 }
 
-int encodeMessageType(MessageType type) {
-  switch (type) {
-    case MessageType.batteryTelemetry:
-      return 0x01;
-  }
-}
