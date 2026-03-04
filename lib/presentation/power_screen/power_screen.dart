@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gcs_sockets/presentation/power_screen/widgets/hv_bms_widget.dart';
 import 'package:gcs_sockets/presentation/power_screen/widgets/hv_pdu_widget.dart';
 import 'package:gcs_sockets/presentation/power_screen/widgets/lv_battery_widget.dart';
-import 'package:gcs_sockets/presentation/power_screen/widgets/lv_pdu.dart';
+import 'package:gcs_sockets/presentation/power_screen/widgets/lv_pdu_widget.dart';
 
 import '../../repository/hv_bms_repository.dart';
 import '../../repository/hv_pdu_repository.dart';

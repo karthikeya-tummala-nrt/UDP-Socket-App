@@ -106,7 +106,7 @@ class LvPduWidget extends StatelessWidget {
       constraints: const BoxConstraints(minWidth: 160),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.04),
+        color: Colors.white.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.white12),
       ),
@@ -135,7 +135,7 @@ class LvPduWidget extends StatelessWidget {
       constraints: const BoxConstraints(minWidth: 160),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: color),
       ),
@@ -165,7 +165,7 @@ class LvPduWidget extends StatelessWidget {
       constraints: const BoxConstraints(minWidth: 140),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: color),
       ),
