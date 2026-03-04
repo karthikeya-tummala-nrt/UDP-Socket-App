@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:typed_data';
-import '../udp_data_source.dart';
+import 'package:gcs_sockets/core/mavlink/mav_frame.dart';
+import 'package:gcs_sockets/core/mavlink/mav_link_parser.dart';
 import 'message_type.dart';
 
 class MessageRouter {
-  final UdpDataSource _source;
+  final MavLinkParser _source;
 
   final Map<MessageType, StreamController<Uint8List>> _controllers = {};
 
@@ -19,17 +20,15 @@ class MessageRouter {
   }
 
   void start() {
-    _sub = _source.rawPackets.listen(_route);
+    _sub = _source.frames.listen(_route);
   }
 
-  void _route(Uint8List bytes) {
-    if (bytes.isEmpty) return;
-
-    final type = decodeMessageType(bytes[0]);
+  void _route(MavFrame frame) {
+    final type = decodeMessageType(frame.messageId);
     if (type == null) return;
 
     final controller = _controllers[type];
-    controller?.add(bytes);
+    controller?.add(frame.payload);
   }
 
   void dispose() {

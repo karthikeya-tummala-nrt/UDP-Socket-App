@@ -31,14 +31,14 @@ class HvPduRepository {
   }
 
   HvPduStatus _parse(Uint8List bytes) {
-    int cursor = 1;
+    int cursor = 0;
 
     final contactors =
-    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: true);
+    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: false);
     cursor += 1;
 
     final dcBusRaw =
-    parseBinaryData(bytes, cursor, 2, isSigned: false, isBigEndian: true);
+    parseBinaryData(bytes, cursor, 2, isSigned: false, isBigEndian: false);
 
     final dcBusVoltage = dcBusRaw / 10.0;
 

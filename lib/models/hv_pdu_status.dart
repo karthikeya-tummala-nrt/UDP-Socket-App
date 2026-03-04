@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 class HvPduStatus {
-  static const int packetSize = 4;
+  static const int packetSize = 3;
 
   final int contactorFlags;
   final double dcBusVoltage;

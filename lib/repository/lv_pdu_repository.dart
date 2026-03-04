@@ -31,18 +31,18 @@ class LvPduRepository {
   }
 
   LvPduStatus _parse(Uint8List bytes) {
-    int cursor = 1;
+    int cursor = 0;
 
     double readU16() {
       final v = parseBinaryData(bytes, cursor, 2,
-          isSigned: false, isBigEndian: true);
+          isSigned: false, isBigEndian: false);
       cursor += 2;
       return v.toDouble();
     }
 
     double readI16() {
       final v = parseBinaryData(bytes, cursor, 2,
-          isSigned: true, isBigEndian: true);
+          isSigned: true, isBigEndian: false);
       cursor += 2;
       return v.toDouble();
     }
@@ -52,7 +52,7 @@ class LvPduRepository {
     final inputPower = readU16();
 
     final channelMask =
-    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: true);
+    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: false);
     cursor += 1;
 
     final channelCurrents = <double>[];
@@ -63,7 +63,7 @@ class LvPduRepository {
     final temperature = readI16() / 10.0;
 
     final canStatus =
-    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: true);
+    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: false);
 
     return LvPduStatus(
       inputVoltage: inputVoltage,

@@ -1,5 +1,5 @@
 class LvPduStatus {
-  static const int packetSize = 24;
+  static const int packetSize = 23;
 
   final double inputVoltage;
   final double inputCurrent;

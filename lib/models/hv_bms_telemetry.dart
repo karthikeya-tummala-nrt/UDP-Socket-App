@@ -1,5 +1,5 @@
 class HvBmsTelemetry {
-  static const int packetSize = 22;
+  static const int packetSize = 21;
 
   final double packVoltage;
   final double packCurrent;

@@ -31,7 +31,7 @@ class HvBmsRepository {
   }
 
   HvBmsTelemetry _parse(Uint8List bytes) {
-    int cursor = 1;
+    int cursor = 0;
 
     double readU16() {
       final v = parseBinaryData(
@@ -39,7 +39,7 @@ class HvBmsRepository {
         cursor,
         2,
         isSigned: false,
-        isBigEndian: true,
+        isBigEndian: false,
       );
       cursor += 2;
       return v.toDouble();
@@ -51,7 +51,7 @@ class HvBmsRepository {
         cursor,
         2,
         isSigned: true,
-        isBigEndian: true,
+        isBigEndian: false,
       );
       cursor += 2;
       return v.toDouble();
@@ -63,7 +63,7 @@ class HvBmsRepository {
         cursor,
         1,
         isSigned: false,
-        isBigEndian: true,
+        isBigEndian: false,
       );
       cursor += 1;
       return v.toDouble();

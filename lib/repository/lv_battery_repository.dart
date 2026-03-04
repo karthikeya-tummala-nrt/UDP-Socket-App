@@ -31,14 +31,14 @@ class LvBatteryRepository {
   }
 
   LvBatteryStatus _parse(Uint8List bytes) {
-    int cursor = 1;
+    int cursor = 0;
 
     final voltageRaw =
-    parseBinaryData(bytes, cursor, 2, isSigned: false, isBigEndian: true);
+    parseBinaryData(bytes, cursor, 2, isSigned: false, isBigEndian: false);
     cursor += 2;
 
     final currentRaw =
-    parseBinaryData(bytes, cursor, 2, isSigned: true, isBigEndian: true);
+    parseBinaryData(bytes, cursor, 2, isSigned: true, isBigEndian: false);
 
     final voltage = voltageRaw / 10.0;
     final current = currentRaw / 10.0;

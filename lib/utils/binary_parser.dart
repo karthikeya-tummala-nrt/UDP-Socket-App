@@ -4,7 +4,7 @@ int parseBinaryData(
     Uint8List data,
     int offset,
     int size, {
-      bool isBigEndian = true,
+      bool isBigEndian = false,
       bool isSigned = false,
     }) {
   int value = 0;

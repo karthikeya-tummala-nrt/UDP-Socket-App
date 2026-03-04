@@ -6,10 +6,10 @@ enum MessageType {
 }
 
 final Map<int, MessageType> _messageMap = {
-  0x01: MessageType.hvBms,
-  0x02: MessageType.hvPdu,
-  0x03: MessageType.lvBattery,
-  0x04: MessageType.lvPdu,
+  60001: MessageType.hvBms,
+  60002: MessageType.hvPdu,
+  60003: MessageType.lvBattery,
+  60004: MessageType.lvPdu,
 };
 
 MessageType? decodeMessageType(int value) {

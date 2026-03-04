@@ -1,5 +1,5 @@
 class LvBatteryStatus {
-  static const int packetSize = 8;
+  static const int packetSize = 4;
 
   final double voltage;
   final double current;
