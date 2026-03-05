@@ -72,16 +72,16 @@ class _StatusAppBarState extends State<StatusAppBar> {
         children: [
           const Text(
             "MODE: SAFE HOLD",
-            style: TextStyle(fontWeight: FontWeight.w500),
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
           ),
 
-          Text("UP TIME : ${_formatUptime()}"),
+          Text("UP TIME : ${_formatUptime()}", style: TextStyle(fontSize: 18)),
 
           Row(
             children: [
               const Icon(Icons.wifi, size: 20, color: Colors.green),
               const SizedBox(width: 16),
-              Text(date),
+              Text(date, style: TextStyle(fontSize: 18)),
               const SizedBox(width: 16),
 
               ValueListenableBuilder<double>(
@@ -145,7 +145,7 @@ class _BatteryIndicator extends StatelessWidget {
             child: Text(
               "${clamped.toStringAsFixed(0)}%",
               style: const TextStyle(
-                fontSize: 11,
+                fontSize: 12,
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
               ),

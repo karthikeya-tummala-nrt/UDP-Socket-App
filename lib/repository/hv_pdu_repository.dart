@@ -10,6 +10,7 @@ class HvPduRepository {
   final MessageRouter _router;
 
   final _controller = StreamController<HvPduStatus>.broadcast();
+
   Stream<HvPduStatus> get stream => _controller.stream;
 
   StreamSubscription<Uint8List>? _sub;
@@ -33,18 +34,56 @@ class HvPduRepository {
   HvPduStatus _parse(Uint8List bytes) {
     int cursor = 0;
 
-    final contactors =
-    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: false);
+    final mainRaw = parseBinaryData(
+      bytes,
+      cursor,
+      1,
+      isSigned: false,
+      isBigEndian: false,
+    );
     cursor += 1;
 
-    final dcBusRaw =
-    parseBinaryData(bytes, cursor, 2, isSigned: false, isBigEndian: false);
+    final motorRaw = parseBinaryData(
+      bytes,
+      cursor,
+      2,
+      isSigned: true,
+      isBigEndian: false,
+    );
+    cursor += 2;
 
-    final dcBusVoltage = dcBusRaw / 10.0;
+    final dcDcPercent = parseBinaryData(
+      bytes,
+      cursor,
+      1,
+      isSigned: false,
+      isBigEndian: false,
+    );
+    cursor += 1;
+
+    final auxPercent = parseBinaryData(
+      bytes,
+      cursor,
+      1,
+      isSigned: false,
+      isBigEndian: false,
+    );
+    cursor += 1;
+
+    final dcBusRaw = parseBinaryData(
+      bytes,
+      cursor,
+      2,
+      isSigned: false,
+      isBigEndian: false,
+    );
 
     return HvPduStatus(
-      contactorFlags: contactors,
-      dcBusVoltage: dcBusVoltage,
+      mainContactor: mainRaw == 1,
+      motorCurrent: motorRaw / 10.0,
+      dcDcPercent: dcDcPercent,
+      auxPercent: auxPercent,
+      dcBusVoltage: dcBusRaw / 10.0,
     );
   }
 
