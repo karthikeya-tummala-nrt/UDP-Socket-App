@@ -9,7 +9,7 @@ class StatusAppBar extends StatefulWidget implements PreferredSizeWidget {
   const StatusAppBar({super.key, required this.repository});
 
   @override
-  Size get preferredSize => const Size.fromHeight(60);
+  Size get preferredSize => const Size.fromHeight(25);
 
   @override
   State<StatusAppBar> createState() => _StatusAppBarState();
@@ -72,7 +72,7 @@ class _StatusAppBarState extends State<StatusAppBar> {
         children: [
           const Text(
             "MODE: SAFE HOLD",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
 
           Text("UP TIME : ${_formatUptime()}"),
@@ -105,11 +105,11 @@ class _BatteryIndicator extends StatelessWidget {
 
   Color getBatteryColor(num percentage) {
     if (percentage > 60) {
-      return Colors.greenAccent;
+      return Colors.green;
     } else if (percentage > 30) {
-      return Colors.orangeAccent;
+      return Colors.orange;
     } else {
-      return Colors.redAccent;
+      return Colors.red;
     }
   }
 
@@ -145,9 +145,9 @@ class _BatteryIndicator extends StatelessWidget {
             child: Text(
               "${clamped.toStringAsFixed(0)}%",
               style: const TextStyle(
-                fontSize: 10,
+                fontSize: 11,
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w900,
               ),
             ),
           ),

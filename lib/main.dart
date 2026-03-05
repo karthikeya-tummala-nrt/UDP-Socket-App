@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gcs_sockets/core/udp_data_source.dart';
 import 'package:gcs_sockets/presentation/power_screen/power_screen.dart';
@@ -13,7 +15,7 @@ import 'core/theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final udpSource = UdpDataSource();
-  await udpSource.init('0.0.0.0', 7400);
+  await udpSource.init(InternetAddress.anyIPv4, 7400);
 
   final mavParser = MavLinkParser(udpSource.packetStream);
   mavParser.start();

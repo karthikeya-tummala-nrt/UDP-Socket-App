@@ -9,10 +9,13 @@ class UdpDataSource {
 
   UdpDataSource();
 
-  Future<void> init(String host, int port) async {
-    _socket = await RawDatagramSocket.bind(InternetAddress(host, type: InternetAddressType.any), port);
+  Future<void> init(InternetAddress host, int port) async {
+    _socket = await RawDatagramSocket.bind(host, port);
     _incomingBuffer = StreamController<Uint8List>.broadcast();
 
+    if (_socket != null) {
+      print('🟢 Socket bound to IP: ${_socket!.address.address} on Port: ${_socket!.port}');
+    }
     _socketSub = _socket!.listen((event) {
       if (event == RawSocketEvent.read) {
         final datagram = _socket!.receive();
