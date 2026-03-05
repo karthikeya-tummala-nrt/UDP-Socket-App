@@ -47,32 +47,47 @@ class LvPduRepository {
       return v.toDouble();
     }
 
+    // Input
     final inputVoltage = readU16() / 10.0;
-    final inputCurrent = readU16() / 10.0;
+    final inputCurrent = readI16() / 10.0;
     final inputPower = readU16();
 
-    final channelMask =
-    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: false);
-    cursor += 1;
+    // Output
+    final outputCurrent = readI16() / 10.0;
+    final loadPower = readU16();
 
+    // Channels
     final channelCurrents = <double>[];
     for (int i = 0; i < 6; i++) {
       channelCurrents.add(readI16() / 10.0);
     }
 
+    // Status
+    final channelMask = parseBinaryData(
+      bytes, cursor, 1,
+      isSigned: false,
+      isBigEndian: false,
+    );
+    cursor += 1;
+
     final temperature = readI16() / 10.0;
 
-    final canStatus =
-    parseBinaryData(bytes, cursor, 1, isSigned: false, isBigEndian: false);
+    final canStatus = parseBinaryData(
+      bytes, cursor, 1,
+      isSigned: false,
+      isBigEndian: false,
+    );
 
     return LvPduStatus(
       inputVoltage: inputVoltage,
       inputCurrent: inputCurrent,
       inputPower: inputPower,
-      channelMask: channelMask,
+      outputCurrent: outputCurrent,
+      loadPower: loadPower,
       channelCurrents: channelCurrents,
+      channelMask: channelMask,
       temperature: temperature,
-      canStatus: canStatus,
+      canStatus: canStatus == 1,
     );
   }
 

@@ -16,7 +16,7 @@ class AppTheme {
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: surface,
-        elevation: 0,
+        elevation: 4,
         centerTitle: true,
       ),
       useMaterial3: true,
