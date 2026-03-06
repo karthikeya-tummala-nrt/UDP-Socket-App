@@ -7,6 +7,8 @@ class AppTheme {
 
     return ThemeData(
       brightness: Brightness.dark,
+      fontFamily: 'JetBrainsMono',
+
       scaffoldBackgroundColor: background,
       cardColor: surface,
       colorScheme: const ColorScheme.dark(

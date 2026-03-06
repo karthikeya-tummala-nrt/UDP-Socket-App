@@ -37,7 +37,7 @@ class HvBmsWidget extends StatelessWidget {
                       "SOH",
                       "${t.soh.toStringAsFixed(0)} %",
                       _sohColor(t.soh),
-                      "Capacity rem",
+                      "Capacity remaining",
                       "${t.capacityRemaining.toStringAsFixed(0)} Ah",
                     ),
                     _dualRow(
@@ -155,9 +155,9 @@ class HvBmsWidget extends StatelessWidget {
       ? Colors.orange
       : Colors.red;
 
-  Color _sohColor(double soh) => soh > 80
+  Color _sohColor(double soh) => soh >= 80
       ? Colors.green
-      : soh > 60
+      : soh >= 60
       ? Colors.orange
       : Colors.red;
 }
