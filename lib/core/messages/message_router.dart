@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:gcs_sockets/core/mavlink/mav_frame.dart';
-import 'package:gcs_sockets/core/mavlink/mav_link_parser.dart';
+import 'package:gcs_sockets/core/mavlink/mavlink_parser.dart';
 import 'message_type.dart';
 
 class MessageRouter {
-  final MavLinkParser _source;
+  final MavlinkParser _source;
 
   final Map<MessageType, StreamController<Uint8List>> _controllers = {};
 

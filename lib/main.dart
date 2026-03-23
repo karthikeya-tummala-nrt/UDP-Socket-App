@@ -8,7 +8,7 @@ import 'package:gcs_sockets/repository/hv_pdu_repository.dart';
 import 'package:gcs_sockets/repository/lv_battery_repository.dart';
 import 'package:gcs_sockets/repository/lv_pdu_repository.dart';
 
-import 'core/mavlink/mav_link_parser.dart';
+import 'core/mavlink/mavlink_parser.dart';
 import 'core/messages/message_router.dart';
 import 'core/theme/app_theme.dart';
 
@@ -17,7 +17,7 @@ void main() async {
   final udpSource = UdpDataSource();
   await udpSource.init(InternetAddress.anyIPv4, 7400);
 
-  final mavParser = MavLinkParser(udpSource.packetStream);
+  final mavParser = MavlinkParser(udpSource.onData);
   mavParser.start();
 
   final messageRouter = MessageRouter(mavParser);

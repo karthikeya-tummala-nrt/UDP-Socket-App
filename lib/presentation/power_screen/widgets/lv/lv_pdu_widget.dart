@@ -27,48 +27,44 @@ class LvPduWidget extends StatelessWidget {
                 const _SectionHeader("LV PDU"),
                 const Divider(height: 12),
 
-                // INPUT
-                _denseMetric(
-                  "Input Voltage",
-                  "${d.inputVoltage.toStringAsFixed(2)} V",
+                Table(
+                  columnWidths: const {
+                    0: FlexColumnWidth(),
+                    1: FlexColumnWidth(),
+                  },
+                  children: [
+                    _dualRow(
+                      "Input Voltage",
+                      "${d.inputVoltage.toStringAsFixed(2)} V",
+                      null,
+                      "Input Current",
+                      "${d.inputCurrent.toStringAsFixed(1)} A",
+                    ),
+                    _dualRow(
+                      "Input Power",
+                      "${d.inputPower.toStringAsFixed(1)} W",
+                      null,
+                      "Output Current",
+                      "${d.outputCurrent.toStringAsFixed(1)} A",
+                    ),
+                    _dualRow(
+                      "Load Power",
+                      "${d.loadPower.toStringAsFixed(1)} W",
+                      null,
+                      "Temperature",
+                      "${d.temperature.toStringAsFixed(1)} °C",
+                    ),
+                    _dualRow(
+                      "CAN Status",
+                      d.canOk ? "ON" : "OFF",
+                      d.canOk ? Colors.green : Colors.red,
+                      "",
+                      "",
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
 
-                _denseMetric(
-                  "Input Current",
-                  "${d.inputCurrent.toStringAsFixed(1)} A",
-                ),
-                const SizedBox(height: 8),
-
-                _denseMetric(
-                  "Input Power",
-                  "${d.inputPower.toStringAsFixed(1)} W",
-                ),
-                const SizedBox(height: 8),
-
-                // OUTPUT
-                _denseMetric(
-                  "Output Current",
-                  "${d.outputCurrent.toStringAsFixed(1)} A",
-                ),
-                const SizedBox(height: 8),
-
-                _denseMetric(
-                  "Load Power",
-                  "${d.loadPower.toStringAsFixed(1)} W",
-                ),
-                const SizedBox(height: 8),
-
-                // SYSTEM
-                _denseMetric(
-                  "Temperature",
-                  "${d.temperature.toStringAsFixed(1)} °C",
-                ),
-                const SizedBox(height: 8),
-
-                _denseMetric("CAN Status", d.canOk ? "ON" : "OFF"),
-
-                const SizedBox(height: 8),
+                const Divider(height: 12),
                 const _SectionHeader("Output Channels"),
                 const SizedBox(height: 8),
 
@@ -92,15 +88,45 @@ class LvPduWidget extends StatelessWidget {
     );
   }
 
-  Widget _denseMetric(String label, String value) {
-    return Row(
-      children: [
-        Expanded(child: Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
-        Text(
-          value,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-        ),
-      ],
+  TableRow _dualRow(
+      String l1,
+      String v1,
+      Color? c1,
+      String l2,
+      String v2, [
+        Color? c2,
+      ]) {
+    return TableRow(children: [_metric(l1, v1, c1), _metric(l2, v2, c2)]);
+  }
+
+  Widget _metric(String label, String value, Color? color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        children: [
+          Flexible(
+            fit: FlexFit.tight,
+            child: Text(
+              label,
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(width: 4),
+          Flexible(
+            fit: FlexFit.loose,
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: color ?? Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

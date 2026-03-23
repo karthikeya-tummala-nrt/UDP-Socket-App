@@ -16,7 +16,7 @@ enum _ParserState {
   waitCrc,
 }
 
-class MavLinkParser {
+class MavlinkParser {
   static const int _mavlinkMaximumPayloadSize = 255;
   static const int _crcInitialValue = 0xFFFF;
 
@@ -44,7 +44,7 @@ class MavLinkParser {
 
   final Map<int, int> _crcExtra = {60001: 50, 60002: 51, 60003: 52, 60004: 53};
 
-  MavLinkParser(this._binaryStream);
+    MavlinkParser(this._binaryStream);
 
   void start() {
     _streamSubscription = _binaryStream.listen(_onData);

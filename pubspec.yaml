@@ -37,6 +37,12 @@ dependencies:
   web_socket_channel: ^3.0.3
   flutter_bloc: ^9.1.1
   provider: ^6.1.5+1
+  comm_module:
+#    git:
+#      url: https://github.com/karthikeya-tummala-nrt/comm_module
+    path: ../data_bridge
+  mavlink_nrt:
+    path: ../mavlink_nrt
 
 dev_dependencies:
   flutter_test:

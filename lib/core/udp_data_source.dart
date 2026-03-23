@@ -32,7 +32,7 @@ class UdpDataSource {
     });
   }
 
-  Stream<Uint8List> get packetStream => _incomingBuffer?.stream ?? const Stream.empty();
+  Stream<Uint8List> get onData => _incomingBuffer?.stream ?? const Stream.empty();
 
   void dispose() {
     _socketSub?.cancel();

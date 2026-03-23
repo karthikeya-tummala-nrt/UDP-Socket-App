@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<mavlink>
+    <version>3</version>
+    <dialect>200</dialect>
+
+    <enums>
+        <enum name="NRT_CONSTANTS">
+            <entry name="FOUNDED_YEAR" value="2017"/>
+            <entry name="OPERATIONAL_TRUE" value="1"/>
+        </enum>
+    </enums>
+
+    <messages>
+
+        <message id="200" name="NRT_COMPANY_INFO">
+            <description>Company information</description>
+            <field type="uint16_t" name="founded_year"/>
+            <field type="char[20]" name="headquarters"/>
+            <field type="uint8_t" name="operational"/>
+        </message>
+
+        <message id="201" name="NRT_LOCATION">
+            <description>Company location</description>
+            <field type="char[20]" name="city"/>
+        </message>
+
+        <message id="202" name="NRT_STATUS">
+            <description>Operational status</description>
+            <field type="uint8_t" name="active"/>
+        </message>
+
+    </messages>
+</mavlink>
